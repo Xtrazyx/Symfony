@@ -12,9 +12,9 @@ class AdvertController extends Controller
         $content = $this->get('templating')->render('OCPlatformBundle:Advert:index.html.twig', array('nom' => 'Julien'));
         return new Response($content);
     }
-    
-    public function autreAction()
+
+    public function viewAction($id)
     {
-        return new Response('Autre Action, autre Route, autre twig ? Non pas de twig là dessus');
+        return new Response('Autre Action, autre Route, autre twig ? Non pas de twig là dessus '.$id);
     }
 }
