@@ -13,5 +13,9 @@
 /var/sessions/*
 !var/sessions/.gitkeep
 !var/SymfonyRequirements.php
+<<<<<<< HEAD
 /vendor/
 /web/bundles/
+=======
+/web/bundles/
+>>>>>>> f8975a772c67bd633f7b8317913846bc5680043a
