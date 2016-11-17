@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vue sur un article</title>
+</head>
+<body>
+<h1>La page d'affichage de l'article {{ id }}</h1>
+
+<div>
+    {% for message in app.session.flashbag.get('info') %}
+    <p>Info: {{ message }}</p>
+    {% endfor %}
+</div>
+
+<p>
+    Bonjour, voici la page n°{{ id }}. Son tag est {{ tag }} ou pas.
+</p>
+</body>
+</html>
