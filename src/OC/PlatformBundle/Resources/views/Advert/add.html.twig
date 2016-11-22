@@ -1,0 +1,18 @@
+{% extends "OCPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+    Ajouter une annonce - {{ parent() }}
+{% endblock %}
+
+{% block oc_platform_body %}
+
+  <h2>
+    Ajouter une annonce
+  </h2>
+  <p>
+    Merci de respecter les règles d'utilisation de ce système d'annonces.
+  </p>
+
+    {{ include("OCPlatformBundle:Advert:form.html.twig") }}
+
+{% endblock %}

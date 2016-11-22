@@ -1,19 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Vue sur un article</title>
-</head>
-<body>
-<h1>La page d'affichage de l'article {{ id }}</h1>
+{% extends "OCPlatformBundle::layout.html.twig" %}
 
-<div>
-    {% for message in app.session.flashbag.get('info') %}
-    <p>Info: {{ message }}</p>
-    {% endfor %}
-</div>
+{% block title %}Vue sur un article{% endblock %}
 
-<p>
-    Bonjour, voici la page n°{{ id }}. Son tag est {{ tag }} ou pas.
-</p>
-</body>
-</html>
+{% block oc_platform_body %}
+  <h2>{{ advert.title }}</h2>
+  <i>Par {{ advert.author }}, le {{ advert.date|date('d/m/Y') }}</i>
+
+  <div class="well">
+    {{ advert.content }}
+  </div>
+
+  <p>
+    <a href="{{ path('oc_platform_home') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour à la liste
+    </a>
+    <a href="{{ path('oc_platform_edit', {'id': advert.id}) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-edit"></i>
+      Modifier l'annonce
+    </a>
+    <a href="{{ path('oc_platform_delete', {'id': advert.id}) }}" class="btn btn-danger">
+      <i class="glyphicon glyphicon-trash"></i>
+      Supprimer l'annonce
+    </a>
+  </p>
+{% endblock %}
