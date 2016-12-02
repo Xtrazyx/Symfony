@@ -1,0 +1,47 @@
+{% extends "OCCoreBundle::layout.html.twig" %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+  <h2>Bienvenue sur le site !</h2>
+
+  {# on affiche la liste des messages flash éventuels#}
+  {% for message in app.session.flashbag.get('info') %}
+    <div class="alert alert-warning">
+      {{ message }}
+    </div>
+  {% endfor %}
+
+  <h3>Les annonces récentes</h3>
+  <hr>
+
+  {# On affiche la liste des annonces, la limite de 3 se fera par la requête SQL
+   et pourra être définie par un paramètre, de plus on considère ici que l'on ne peut
+   pas éditer ou supprimer les annonces #}
+  {% for advert in listAdverts  %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4>
+          {{ advert.title }}
+        </h4>
+        <a href="{{ path('oc_platform_view', {'id': advert.id}) }}" class="btn btn-default btn-sm">
+          <i class="glyphicon glyphicon-eye-open"></i>
+          Voir l'annonce
+        </a>
+        <i>
+          Par {{ advert.author }}, le {{ advert.date|date('d/m/Y') }}
+        </i>
+      </div>
+      <div class="panel-body">
+        {{ advert.content }}
+      </div>
+    </div>
+  {% else %}
+    <p>Pas d'annonces pour le moment !</p>
+  {% endfor %}
+
+  <a href="{{ path('oc_platform_home') }}" class="btn btn-default btn-sm">
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    Voir les annonces
+  </a>
+{% endblock %}

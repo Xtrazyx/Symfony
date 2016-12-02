@@ -3,12 +3,52 @@
 {% block title %}Vue sur un article{% endblock %}
 
 {% block oc_platform_body %}
+  {% if advert.image is not null %}
+    <img src="{{ advert.image.url }}" alt="{{ advert.image.alt }}">
+  {% endif %}
+
   <h2>{{ advert.title }}</h2>
-  <i>Par {{ advert.author }}, le {{ advert.date|date('d/m/Y') }}</i>
+  <i>Par {{ advert.author }}, le {{ advert.date|date('d/m/Y') }}
+
+    {% if advert.updatedAt > advert.date %}
+      modifiée le {{ advert.updatedAt|date('d/m/Y') }}
+    {% endif %}
+
+    {# On vérifie si le tableau n'est pas vide #}
+    {% if not advert.categories.empty %}
+      {# On affiche les catégories #}
+      {% for category in advert.categories %}
+        {{ category.name }}
+        {# Permet de ne pas ajouter la virgule sur la dernière boucle #}
+        {% if not loop.last %}
+          ,
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    {% if listAdvertSkills|length > 0 %}
+      {# On affiche les skills et leurs niveau pour l'annonce #}
+      {% for advertSkill in listAdvertSkills %}
+        {{ advertSkill.skill.name }}: Niveau {{ advertSkill.level }}
+        {# Permet de ne pas ajouter la virgule sur la dernière boucle #}
+        {% if not loop.last %}
+          ,
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </i>
 
   <div class="well">
     {{ advert.content }}
   </div>
+
+  <h5>Candidatures</h5>
+  {% for application in listApplications %}
+    <h6>Par {{ application.author }}, le {{ application.date|date('d/m/Y') }}</h6>
+    <div class="well">
+      {{ application.content }}
+    </div>
+  {% endfor %}
 
   <p>
     <a href="{{ path('oc_platform_home') }}" class="btn btn-default">

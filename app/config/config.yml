@@ -36,8 +36,6 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
-    globals:
-        webmaster: %app_webmaster%
 
 # Doctrine Configuration
 doctrine:
@@ -68,3 +66,9 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+# Stof\DoctrinesExtensionsBundle Configuration
+stof_doctrine_extensions:
+    orm:
+        default:
+            sluggable: true

@@ -1,9 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Bienvenue sur ma première page avec OpenClassrooms !</title>
-</head>
-<body>
-    <h1>Delete article n°{{ id }}</h1>
-</body>
-</html>
+{% extends "OCPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }} - Supprimer une annonce
+{% endblock %}
+
+{% block oc_platform_body %}
+
+    <p>
+        L'annonce n°{{ id }} a bien été supprimée. (c'est pas vrai mais ça va venir).
+    </p>
+
+    <a href="{{ path('oc_platform_home') }}">Voir les annonces</a>
+
+{% endblock %}

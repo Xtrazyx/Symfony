@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width-device-width, initial-scale=1">
-    <title>{% block title %}OCP-Find your way !{% endblock %}</title>
+    <title>{% block title %}OCP{% endblock %}</title>
     {% block stylesheets %}
-      {# CSS de bootstrap twitter #}
+      {# Bootstrap #}
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
@@ -15,30 +15,35 @@
 
   <body>
     <div class="container">
-      <div id="header" class="jumbotron">
-        <h1>Ma plateforme d'annonces</h1>
-        <p>
+      <div id="header" class="page-header">
+        <h1>
+          Ma plateforme d'échange
+        </h1>
+        <div>
           Ce projet est propulsé par Symfony,
-          et construit grâce au MOOC OpenClassrooms et SensioLabs. Blabla je te fais de la pub au milieu du cours ! :)
-        </p>
-        <p>
-          <a class="btn btn-primary btn-lg" href="https://openclassrooms.com/courses/developpez-votre-site-web-avec-le-framework-symfony2">
+          et construit grâce au MOOC OpenClassrooms et SensioLabs.
+          <a class="btn btn-primary btn-sm" href="https://openclassrooms.com/courses/developpez-votre-site-web-avec-le-framework-symfony2">
             Participer au MOOC »
           </a>
-        </p>
+        </div>
       </div>
 
       {# Conteneur #}
       <div class="row">
         {# Colonne de gauche #}
         <div id="menu" class="col-md-3">
-          <h3>Les annonces</h3>
           <ul class="nav nav-pills nav-stacked">
-            <li><a href="{{ path('oc_platform_home') }}">Accueil</a></li>
+            <li><a href="{{ path('oc_core_home') }}">Accueil</a></li>
+            <li><a href="{{ path('oc_core_contact') }}">Nous contacter</a></li>
+          </ul>
+          <hr>
+          <h5>Plateforme d'annonce</h5>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="{{ path('oc_platform_home') }}">Voir les annonces</a></li>
             <li><a href="{{ path('oc_platform_add') }}">Ajouter une annonce</a></li>
           </ul>
 
-          <h4>Dernières annonces</h4>
+          <h5>Dernières annonces</h5>
           {{ render(controller("OCPlatformBundle:Advert:menu", {'limit': 3})) }}
         </div>
 
@@ -57,7 +62,7 @@
     </div>
 
     {% block javascripts %}
-      {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
+      {# bootstrap #}
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
       integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     {% endblock %}
