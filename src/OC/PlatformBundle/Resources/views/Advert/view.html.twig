@@ -3,8 +3,14 @@
 {% block title %}Vue sur un article{% endblock %}
 
 {% block oc_platform_body %}
+
+  {% include "OCPlatformBundle:Advert:flashbag.html.twig" %}
+
   {% if advert.image is not null %}
-    <img src="{{ advert.image.url }}" alt="{{ advert.image.alt }}">
+    <img
+        src="{{ asset(advert.image.webPath) }}"
+        alt="{{ advert.image.alt }}"
+    />
   {% endif %}
 
   <h2>{{ advert.title }}</h2>
@@ -26,9 +32,9 @@
       {% endfor %}
     {% endif %}
 
-    {% if listAdvertSkills|length > 0 %}
+    {% if not advert.advertSkills.empty %}
       {# On affiche les skills et leurs niveau pour l'annonce #}
-      {% for advertSkill in listAdvertSkills %}
+      {% for advertSkill in advert.advertSkills %}
         {{ advertSkill.skill.name }}: Niveau {{ advertSkill.level }}
         {# Permet de ne pas ajouter la virgule sur la dernière boucle #}
         {% if not loop.last %}
@@ -38,17 +44,24 @@
     {% endif %}
   </i>
 
+
   <div class="well">
     {{ advert.content }}
   </div>
 
   <h5>Candidatures</h5>
-  {% for application in listApplications %}
-    <h6>Par {{ application.author }}, le {{ application.date|date('d/m/Y') }}</h6>
+  {% if not advert.applications.empty %}
+    {% for application in advert.applications %}
+      <h6>Par {{ application.author }}, le {{ application.date|date('d/m/Y') }}</h6>
+      <div class="well">
+        {{ application.content }}
+      </div>
+    {% endfor %}
+  {% else %}
     <div class="well">
-      {{ application.content }}
+      Pas encore de candidature pour cette annonce !
     </div>
-  {% endfor %}
+  {% endif %}
 
   <p>
     <a href="{{ path('oc_platform_home') }}" class="btn btn-default">

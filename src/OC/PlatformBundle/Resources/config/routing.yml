@@ -25,6 +25,14 @@ oc_platform_edit:
     requirements:
         id: \d+
 
+oc_platform_purge:
+    path:     /purge/{days}
+    defaults:
+        _controller: OCPlatformBundle:Advert:purge
+        days: 30
+    requirements:
+        days: \d+
+
 oc_platform_view:
     path:     /advert/{id}
     defaults:

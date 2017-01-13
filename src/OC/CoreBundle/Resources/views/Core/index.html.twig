@@ -6,11 +6,7 @@
   <h2>Bienvenue sur le site !</h2>
 
   {# on affiche la liste des messages flash éventuels#}
-  {% for message in app.session.flashbag.get('info') %}
-    <div class="alert alert-warning">
-      {{ message }}
-    </div>
-  {% endfor %}
+  {% include "OCPlatformBundle:Advert:flashbag.html.twig" %}
 
   <h3>Les annonces récentes</h3>
   <hr>

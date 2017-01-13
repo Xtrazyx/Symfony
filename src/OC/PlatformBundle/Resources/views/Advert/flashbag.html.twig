@@ -1,0 +1,6 @@
+{# on affiche la liste des messages flash éventuels#}
+  {% for message in app.session.flashbag.get('notice') %}
+    <div class="alert alert-warning">
+      {{ message }}
+    </div>
+  {% endfor %}

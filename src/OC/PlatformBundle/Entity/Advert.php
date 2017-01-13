@@ -79,7 +79,7 @@ class Advert
     private $slug;
 
     /**
-     * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image", cascade={"persist", "remove"})
      */
     private $image;
 
@@ -94,14 +94,19 @@ class Advert
      */
     private $applications;
 
+    /**
+     * @ORM\OneToMany(targetEntity="OC\PlatformBundle\Entity\AdvertSkill", mappedBy="advert")
+     */
+    private $advertSkills;
+
     public function __construct()
     {
         // Par défaut la date est celle du jour
         $this->date = new \DateTime();
-        // Categories est un tableau d'objet
+        // On déclare des tableaux d'objet pour les variables tableaux d'entités
         $this->categories= new ArrayCollection();
-        // Applications
         $this->applications = new ArrayCollection();
+        $this->advertSkills = new ArrayCollection();
     }
 
     /**
@@ -300,7 +305,7 @@ class Advert
      *
      * @return Advert
      */
-    public function addApplication(\OC\PlatformBundle\Entity\Application $application)
+    public function addApplication(Application $application)
     {
         $this->applications[] = $application;
 
@@ -315,7 +320,7 @@ class Advert
      *
      * @param \OC\PlatformBundle\Entity\Application $application
      */
-    public function removeApplication(\OC\PlatformBundle\Entity\Application $application)
+    public function removeApplication(Application $application)
     {
         $this->applications->removeElement($application);
     }
@@ -415,5 +420,42 @@ class Advert
     public function getSlug()
     {
         return $this->slug;
+    }
+
+
+    /**
+     * Add advertSkill
+     *
+     * @param \OC\PlatformBundle\Entity\AdvertSkill $advertSkill
+     *
+     * @return Advert
+     */
+    public function addAdvertSkill(AdvertSkill $advertSkill)
+    {
+        $this->advertSkills[] = $advertSkill;
+
+        $advertSkill->setAdvert($this);
+    
+        return $this;
+    }
+
+    /**
+     * Remove advertSkill
+     *
+     * @param \OC\PlatformBundle\Entity\AdvertSkill $advertSkill
+     */
+    public function removeAdvertSkill(AdvertSkill $advertSkill)
+    {
+        $this->advertSkills->removeElement($advertSkill);
+    }
+
+    /**
+     * Get advertSkills
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAdvertSkills()
+    {
+        return $this->advertSkills;
     }
 }

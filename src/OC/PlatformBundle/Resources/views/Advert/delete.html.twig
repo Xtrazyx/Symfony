@@ -1,15 +1,27 @@
 {% extends "OCPlatformBundle::layout.html.twig" %}
 
 {% block title %}
-    {{ parent() }} - Supprimer une annonce
+    Supprimer une annonce - {{ parent() }}
 {% endblock %}
 
 {% block oc_platform_body %}
 
+    <h2>Supprimer une annonce</h2>
+
     <p>
-        L'annonce n°{{ id }} a bien été supprimée. (c'est pas vrai mais ça va venir).
+        Etes-vous certain de vouloir supprimer l'annonce "{{ advert.title }}" ?
     </p>
 
-    <a href="{{ path('oc_platform_home') }}">Voir les annonces</a>
+    {# On met l'id de l'annonce dans la route de l'action du formulaire #}
+    <form action="{{ path('oc_platform_delete', {'id': advert.id}) }}" method="post">
+        <a href="{{ path('oc_platform_view', {'id': advert.id}) }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Retour à l'annonce
+        </a>
+        {# Ici j'ai écrit le bouton de soumission à la main #}
+        <input type="submit" value="Supprimer" class="btn btn-danger" />
+        {# Ceci va générer le champ CSRF #}
+        {{ form_rest(form) }}
+    </form>
 
 {% endblock %}

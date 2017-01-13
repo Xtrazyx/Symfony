@@ -21,7 +21,7 @@ class ApplicationMailer {
         );
 
         // On récupère ici l'auteur de l'annonce en lieu et place du mail pour le moment
-        $message->addTo($application->getAdvert()->getAuthor())->addFrom('adresse_sender@plop.com');
+        $message->addTo('adresse_sender@plop.com');
 
         // On envoi le tout
         $this->mailer->send($message);

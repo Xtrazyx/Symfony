@@ -8,27 +8,12 @@ use Symfony\Component\HttpFoundation\Request;
 class CoreController extends Controller
 {
     public function indexAction(){
-        // On simule le résultat d'une requête SQL qui récupère les trois dernières annonces
-        $listAdverts = array(
-            array(
-                'title'   => 'Recherche développeur Symfony',
-                'id'      => 1,
-                'author'  => 'Alexandre',
-                'content' => 'Nous recherchons un développeur Symfony débutant sur Lyon. Blabla…',
-                'date'    => new \Datetime()),
-            array(
-                'title'   => 'Mission de webmaster',
-                'id'      => 2,
-                'author'  => 'Hugo',
-                'content' => 'Nous recherchons un webmaster capable de maintenir notre site internet. Blabla…',
-                'date'    => new \Datetime()),
-            array(
-                'title'   => 'Offre de stage web designer',
-                'id'      => 3,
-                'author'  => 'Robert',
-                'content' => 'Nous proposons un poste pour web designer. Blabla…',
-                'date'    => new \Datetime())
-        );
+        $listAdverts = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('OCPlatformBundle:Advert')
+            ->getLastAdvertsWithLimit(3); //On met la limite en dur pour l'instant
+
         return $this->render('OCCoreBundle:Core:index.html.twig', array('listAdverts' => $listAdverts));
     }
 
