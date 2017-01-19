@@ -49,6 +49,11 @@ class Application
      */
     private $advert;
 
+    /**
+     * @var string
+     */
+    private $ip;
+
     public function __construct()
     {
         $this->date = new \DateTime();
@@ -172,5 +177,21 @@ class Application
      */
     public function dec(){
         $this->getAdvert()->decApplication();
+    }
+
+    /**
+     * @return string
+     */
+    public function getIp()
+    {
+        return $this->ip;
+    }
+
+    /**
+     * @param string $ip
+     */
+    public function setIp($ip)
+    {
+        $this->ip = $ip;
     }
 }

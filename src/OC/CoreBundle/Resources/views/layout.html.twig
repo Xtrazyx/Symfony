@@ -10,6 +10,9 @@
       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
       integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+      {% stylesheets 'bundles/ocplatform/css/main.css' filter='cssrewrite, ?scssphp' %}
+      <link rel="stylesheet" href="{{ asset_url }}"/>
+      {% endstylesheets %}
     {% endblock %}
   </head>
 
@@ -35,12 +38,17 @@
           <ul class="nav nav-pills nav-stacked">
             <li><a href="{{ path('oc_core_home') }}">Accueil</a></li>
             <li><a href="{{ path('oc_core_contact') }}">Nous contacter</a></li>
+            <li><a href="{{ path('fos_user_security_logout') }}">Se déconnecter</a></li>
           </ul>
           <hr>
-          <h5>Plateforme d'annonce</h5>
+          <h5>{{ "Plateforme d'annonce"|trans }}</h5>
           <ul class="nav nav-pills nav-stacked">
-            <li><a href="{{ path('oc_platform_home') }}">Voir les annonces</a></li>
-            <li><a href="{{ path('oc_platform_add') }}">Ajouter une annonce</a></li>
+            <li><a href="{{ path('oc_platform_home') }}">{{ 'Voir les annonces'|trans }}</a></li>
+            {% if is_granted('ROLE_AUTEUR') %}
+            <li><a href="{{ path('oc_platform_add') }}">{{ 'Ajouter une annonce'|trans }}</a></li>
+            {% else %}
+            <li><a href="{{ path('fos_user_security_login') }}">Vous devez être connecté pour poster des annonces</a></li>
+            {% endif %}
           </ul>
 
           <h5>Dernières annonces</h5>

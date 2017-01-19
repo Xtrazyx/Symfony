@@ -4,6 +4,7 @@ namespace OC\PlatformBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Image
@@ -39,6 +40,7 @@ class Image
 
     /**
      * @var UploadedFile
+     * @Assert\Image(maxSize="1M")
      */
     private $file;
 

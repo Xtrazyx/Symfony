@@ -3,15 +3,14 @@
 namespace OC\PlatformBundle\Controller;
 
 use OC\PlatformBundle\Entity\Advert;
+use OC\PlatformBundle\Event\MessagePostEvent;
+use OC\PlatformBundle\Event\PlatformEvents;
 use OC\PlatformBundle\Form\AdvertType;
 use OC\PlatformBundle\Form\AdvertEditType;
-use OC\PlatformBundle\Entity\AdvertSkill;
-use OC\PlatformBundle\Entity\Image;
-use OC\PlatformBundle\Entity\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class AdvertController extends Controller
 {
@@ -37,10 +36,20 @@ class AdvertController extends Controller
         ));
     }
 
-    // Ajout d'un article
+    // Ajout d'un article, annotation de sécurité sur le role auteur
+    /**
+     * @Security("has_role('ROLE_AUTEUR')")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function addAction(Request $request){
 
         $advert = new Advert();
+        $em = $this->getDoctrine()->getManager();
+
+        //On récupère le UserRepository correspondant à l'Id du User identifié
+        $userId = $this->getUser()->getId();
+        $user = $em->getRepository('OCUserBundle:User')->find($userId);
 
         // On crée un form builder grâce au service form factory et on génère le formulaire
         $form = $this->createForm(AdvertType::class, $advert);
@@ -49,9 +58,16 @@ class AdvertController extends Controller
         if($request->isMethod('POST')){
             // On lie les variables de la requête du formulaire avec celle de l'objet Advert
             $form->handleRequest($request);
+
             // On valide les données avant de les enregistrer
             if($form->isValid()){
-                $em = $this->getDoctrine()->getManager();
+                $user->addAdvert($advert);
+
+                //On crée l'event MessagePost
+                $event = new MessagePostEvent($advert->getContent(), $advert->getUser());
+                //On déclenche l'event
+                $this->get('event_dispatcher')->dispatch(PlatformEvents::POST_MESSAGE, $event);
+
                 $em->persist($advert);
                 $em->flush();
 
@@ -67,6 +83,7 @@ class AdvertController extends Controller
     public function deleteAction(Request $request, $id){
         $manager = $this->getDoctrine()->getManager();
         $advert = $manager->getRepository('OCPlatformBundle:Advert')->find($id);
+        $user = $advert->getUser();
 
         if(null === $advert){
             throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
@@ -77,6 +94,7 @@ class AdvertController extends Controller
         $form = $this->get('form.factory')->create();
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $user->removeAdvert($advert);
             $manager->remove($advert);
             $manager->flush();
 
@@ -139,18 +157,25 @@ class AdvertController extends Controller
         return $this->redirectToRoute('oc_platform_home');
     }
 
-    // Affichage des articles
-    public function viewAction($id){
+    /**
+     * @param Advert $advert
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function viewAction(Advert $advert){
 
         // On appelle le manager de doctrine (service)
         $manager = $this->getDoctrine()->getManager();
 
         // On cherche via repository l'annonce par son id
-        $advert = $manager->getRepository('OCPlatformBundle:Advert')->find($id);
+        // $advert = $manager->getRepository('OCPlatformBundle:Advert')->find($id);
 
-        if (null == $advert){
-            throw new NotFoundHttpException("L'annonce ".$id." n'existe pas. Désolé.");
-        }
+        //Grâce à la précision du type d'objet en paramètre de l'action on récupère directement
+        // un objet Advert ! Et aussi une gestion vers une erreur 404 si l'objet n'existe pas.
+        $advert->getId();
+
+        //if (null == $advert){
+        //    throw new NotFoundHttpException("L'annonce ".$id." n'existe pas. Désolé.");
+        //}
 
         // On récupère la liste des candidatures pour cette annonce
         // $listApplications = $manager->getRepository('OCPlatformBundle:Application')

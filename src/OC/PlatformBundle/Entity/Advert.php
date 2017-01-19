@@ -5,6 +5,8 @@ namespace OC\PlatformBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as GED;
+use Symfony\Component\Validator\Constraints as Assert;
+use OC\PlatformBundle\Validator\Antiflood;
 
 /**
  * Advert
@@ -33,21 +35,22 @@ class Advert
 
     /**
      * @var string
-     *
+     * @Assert\Length(min=10)
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="author", type="string", length=255)
+     * @Assert\Length(min=2)
+     * @Assert\NotBlank()
      */
     private $author;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Antiflood()
      * @ORM\Column(name="content", type="text")
      */
     private $content;
@@ -80,6 +83,7 @@ class Advert
 
     /**
      * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image", cascade={"persist", "remove"})
+     * @Assert\Valid()
      */
     private $image;
 
@@ -98,6 +102,11 @@ class Advert
      * @ORM\OneToMany(targetEntity="OC\PlatformBundle\Entity\AdvertSkill", mappedBy="advert")
      */
     private $advertSkills;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="OC\UserBundle\Entity\User", inversedBy="adverts")
+     */
+    private $user;
 
     public function __construct()
     {
@@ -183,7 +192,6 @@ class Advert
 
     /**
      * Get author
-     *
      * @return string
      */
     public function getAuthor()
@@ -457,5 +465,21 @@ class Advert
     public function getAdvertSkills()
     {
         return $this->advertSkills;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
     }
 }
