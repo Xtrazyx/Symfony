@@ -3,6 +3,7 @@
 namespace OC\PlatformBundle\Controller;
 
 use OC\PlatformBundle\Entity\Advert;
+use OC\UserBundle\Entity\User;
 use OC\PlatformBundle\Event\MessagePostEvent;
 use OC\PlatformBundle\Event\PlatformEvents;
 use OC\PlatformBundle\Form\AdvertType;

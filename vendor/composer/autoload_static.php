@@ -76,6 +76,10 @@ class ComposerStaticInitddba99e3cffffa7d8fa25945f74815e4
             'Doctrine\\Bundle\\DoctrineCacheBundle\\' => 36,
             'Doctrine\\Bundle\\DoctrineBundle\\' => 31,
         ),
+        'C' => 
+        array (
+            'CoreSphere\\ConsoleBundle\\' => 25,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -210,6 +214,10 @@ class ComposerStaticInitddba99e3cffffa7d8fa25945f74815e4
         'Doctrine\\Bundle\\DoctrineBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/doctrine-bundle',
+        ),
+        'CoreSphere\\ConsoleBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/coresphere/console-bundle',
         ),
     );
 
